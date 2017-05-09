@@ -17,7 +17,7 @@
 #         under the License.
 -->
 
-# cordova-plugin-mediaac
+# cordova-plugin-media
 
 
 This plugin provides the ability to play back audio streaming on a device.
@@ -28,21 +28,21 @@ specification for media capture, and is provided for convenience only.
 A future implementation will adhere to the latest W3C specification
 and may deprecate the current APIs.
 
-This plugin defines a global `Mediaac` Constructor.
+This plugin defines a global `Media` Constructor.
 
 Although in the global scope, it is not available until after the `deviceready` event.
 
 ```js
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
-        console.log(Mediaac);
+        console.log(Media);
     }
 ```
 
 ## Installation
 
 ```bash
-    cordova plugin add https://github.com/AlexisCaffa/cordova-plugin-mediaac.git
+    cordova plugin add https://github.com/AlexisCaffa/cordova-plugin-media.git
 ```
 
 ## Supported Platforms
@@ -62,17 +62,17 @@ Without aac decoders:
 
 - Only one media file can be played back at a time.
 
-## Mediaac
+## Media
 
 ```js
-    var media = new Mediaac(src, mediaSuccess, [mediaError], [mediaStatus]);
+    var media = new Media(src, mediaSuccess, [mediaError], [mediaStatus]);
 ```
 
 ### Parameters
 
 - __src__: A URI containing the audio content. _(DOMString)_
 
-- __mediaSuccess__: (Optional) The callback that executes after a `Mediaac` object has completed the current play, record, or stop action. _(Function)_
+- __mediaSuccess__: (Optional) The callback that executes after a `Media` object has completed the current play, record, or stop action. _(Function)_
 
 - __mediaError__: (Optional) The callback that executes if an error occurs. _(Function)_
 
@@ -80,7 +80,7 @@ Without aac decoders:
 
 __NOTE__: `cdvfile` path is supported as `src` parameter:
 ```javascript
-var my_media = new Mediaac('cdvfile://localhost/temporary/recording.mp3', ...);
+var my_media = new Media('cdvfile://localhost/temporary/recording.mp3', ...);
 ```
 
 ### Constants
@@ -88,11 +88,11 @@ var my_media = new Mediaac('cdvfile://localhost/temporary/recording.mp3', ...);
 The following constants are reported as the only parameter to the
 `mediaStatus` callback:
 
-- `Mediaac.MEDIA_NONE`     = 0;
-- `Mediaac.MEDIA_STARTING` = 1;
-- `Mediaac.MEDIA_RUNNING`  = 2;
-- `Mediaac.MEDIA_PAUSED`   = 3;
-- `Mediaac.MEDIA_STOPPED`  = 4;
+- `Media.MEDIA_NONE`     = 0;
+- `Media.MEDIA_STARTING` = 1;
+- `Media.MEDIA_RUNNING`  = 2;
+- `Media.MEDIA_PAUSED`   = 3;
+- `Media.MEDIA_STOPPED`  = 4;
 
 ### Methods
 
@@ -118,7 +118,7 @@ Pauses playing an audio file.
     //
     function playAudio(url) {
         // Play the audio file at url
-        var my_media = new Mediaac(url,
+        var my_media = new Media(url,
             // success callback
             function () { console.log("playAudio():Audio Success"); },
             // error callback
@@ -150,7 +150,7 @@ media.play();
     //
     function playAudio(url) {
         // Play the audio file at url
-        var my_media = new Mediaac(url,
+        var my_media = new Media(url,
             // success callback
             function () {
                 console.log("playAudio():Audio Success");
@@ -170,16 +170,16 @@ media.play();
 - __numberOfLoops__: Pass this option to the `play` method to specify
   the number of times you want the media file to play, e.g.:
 
-        var myMediaac = new Mediaac("http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3")
-        myMediaac.play({ numberOfLoops: 2 })
+        var myMedia = new Media("http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3")
+        myMedia.play({ numberOfLoops: 2 })
 
 - __playAudioWhenScreenIsLocked__: Pass in this option to the `play`
   method to specify whether you want to allow playback when the screen
   is locked.  If set to `true` (the default value), the state of the
   hardware mute button is ignored, e.g.:
 
-        var myMediaac = new Mediaac("http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3")
-        myMediaac.play({ playAudioWhenScreenIsLocked : false })
+        var myMedia = new Media("http://audio.ibeat.org/content/p1rj1s/p1rj1s_-_rockGuitar.mp3")
+        myMedia.play({ playAudioWhenScreenIsLocked : false })
         myMedia.setVolume('1.0');
 
 > Note: To allow playback with the screen locked or background audio you have to add `audio` to `UIBackgroundModes` in the `info.plist` file. See [Apple documentation](https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/BackgroundExecution/BackgroundExecution.html#//apple_ref/doc/uid/TP40007072-CH4-SW23). Also note that the audio has to be started before going to background.
@@ -188,15 +188,15 @@ media.play();
   provided, iOS searches in the `www` directory for the file, then in
   the application's `documents/tmp` directory:
 
-        var myMediaac = new Mediaac("audio/beer.mp3")
-        myMediaac.play()  // first looks for file in www/audio/beer.mp3 then in <application>/documents/tmp/audio/beer.mp3
+        var myMedia = new Media("audio/beer.mp3")
+        myMedia.play()  // first looks for file in www/audio/beer.mp3 then in <application>/documents/tmp/audio/beer.mp3
 
 ## media.release
 
 Releases the underlying operating system's audio resources.
 This is particularly important for Android, since there are a finite amount of
 OpenCore instances for media playback. Applications should call the `release`
-function for any `Mediaac` resource that is no longer needed.
+function for any `Media` resource that is no longer needed.
 
     media.release();
 
@@ -206,7 +206,7 @@ function for any `Mediaac` resource that is no longer needed.
 ```js
     // Audio player
     //
-    var my_media = new Mediaac(src, onSuccess, onError);
+    var my_media = new Media(src, onSuccess, onError);
 
     my_media.play();
     my_media.stop();
@@ -226,7 +226,7 @@ Stops playing an audio file.
     //
     function playAudio(url) {
         // Play the audio file at url
-        var my_media = new Mediaac(url,
+        var my_media = new Media(url,
             // success callback
             function() {
                 console.log("playAudio():Audio Success");
@@ -247,9 +247,9 @@ Stops playing an audio file.
     }
 ```
 
-## MediaacError
+## MediaError
 
-A `MediaacError` object is returned to the `mediaError` callback
+A `MediaError` object is returned to the `mediaError` callback
 function when an error occurs.
 
 ### Properties
@@ -260,8 +260,8 @@ function when an error occurs.
 
 ### Constants
 
-- `MediaacError.MEDIA_ERR_ABORTED`        = 1
-- `MediaacError.MEDIA_ERR_NETWORK`        = 2
-- `MediaacError.MEDIA_ERR_DECODE`         = 3
-- `MediaacError.MEDIA_ERR_NONE_SUPPORTED` = 4
+- `MediaError.MEDIA_ERR_ABORTED`        = 1
+- `MediaError.MEDIA_ERR_NETWORK`        = 2
+- `MediaError.MEDIA_ERR_DECODE`         = 3
+- `MediaError.MEDIA_ERR_NONE_SUPPORTED` = 4
 

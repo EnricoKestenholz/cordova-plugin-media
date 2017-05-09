@@ -19,7 +19,7 @@
  *
 */
 
-/* global MediaacError */
+/* global MediaError */
 
 var argscheck = require('cordova/argscheck'),
     utils = require('cordova/utils');
@@ -38,8 +38,8 @@ var mediaObjects = {};
  * @param statusCallback        The callback to be called when media status has changed.
  *                                  statusCallback(int statusCode) - OPTIONAL
  */
-var Mediaac = function(src, successCallback, errorCallback, statusCallback) {
-    argscheck.checkArgs('SFFF', 'Mediaac', arguments);
+var Media = function(src, successCallback, errorCallback, statusCallback) {
+    argscheck.checkArgs('SFFF', 'Media', arguments);
     this.id = utils.createUUID();
     mediaObjects[this.id] = this;
     this.src = src;
@@ -49,12 +49,12 @@ var Mediaac = function(src, successCallback, errorCallback, statusCallback) {
     this._duration = -1;
     this._position = -1;
 
-    Mediaac.onStatus(this.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_STARTING);
+    Media.onStatus(this.id, Media.MEDIA_STATE, Media.MEDIA_STARTING);
     
     try {
         this.node = createNode(this);
     } catch (err) {
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, { code: MediaacError.MEDIA_ERR_ABORTED });
+        Media.onStatus(this.id, Media.MEDIA_ERROR, { code: MediaError.MEDIA_ERR_ABORTED });
     }
 };
 
@@ -67,15 +67,15 @@ function createNode (media) {
     var node = new Audio();
 
     node.onloadstart = function () {
-        Mediaac.onStatus(media.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_STARTING);
+        Media.onStatus(media.id, Media.MEDIA_STATE, Media.MEDIA_STARTING);
     };
 
     node.onplaying = function () {
-        Mediaac.onStatus(media.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_RUNNING);
+        Media.onStatus(media.id, Media.MEDIA_STATE, Media.MEDIA_RUNNING);
     };
 
     node.ondurationchange = function (e) {
-        Mediaac.onStatus(media.id, Mediaac.MEDIA_DURATION, e.target.duration || -1);
+        Media.onStatus(media.id, Media.MEDIA_DURATION, e.target.duration || -1);
     };
 
     node.onerror = function (e) {
@@ -84,11 +84,11 @@ function createNode (media) {
             { code: MediaError.MEDIA_ERR_ABORTED } :
             e.target.error;
 
-        Mediaac.onStatus(media.id, Mediaac.MEDIA_ERROR, err);
+        Media.onStatus(media.id, Media.MEDIA_ERROR, err);
     };
 
     node.onended = function () {
-        Mediaac.onStatus(media.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_STOPPED);
+        Media.onStatus(media.id, Media.MEDIA_STATE, Media.MEDIA_STOPPED);
     };
 
     if (media.src) {
@@ -98,31 +98,31 @@ function createNode (media) {
     return node;
 }
 
-// Mediaac messages
-Mediaac.MEDIA_STATE = 1;
-Mediaac.MEDIA_DURATION = 2;
-Mediaac.MEDIA_POSITION = 3;
-Mediaac.MEDIA_ERROR = 9;
+// Media messages
+Media.MEDIA_STATE = 1;
+Media.MEDIA_DURATION = 2;
+Media.MEDIA_POSITION = 3;
+Media.MEDIA_ERROR = 9;
 
-// Mediaac states
-Mediaac.MEDIA_NONE = 0;
-Mediaac.MEDIA_STARTING = 1;
-Mediaac.MEDIA_RUNNING = 2;
-Mediaac.MEDIA_PAUSED = 3;
-Mediaac.MEDIA_STOPPED = 4;
-Mediaac.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
+// Media states
+Media.MEDIA_NONE = 0;
+Media.MEDIA_STARTING = 1;
+Media.MEDIA_RUNNING = 2;
+Media.MEDIA_PAUSED = 3;
+Media.MEDIA_STOPPED = 4;
+Media.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
 
 /**
  * Start or resume playing audio file.
  */
-Mediaac.prototype.play = function() {
+Media.prototype.play = function() {
 
-    // if Mediaac was released, then node will be null and we need to create it again
+    // if Media was released, then node will be null and we need to create it again
     if (!this.node) {
         try {
             this.node = createNode(this);
         } catch (err) {
-            Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, { code: MediaacError.MEDIA_ERR_ABORTED });
+            Media.onStatus(this.id, Media.MEDIA_ERROR, { code: MediaError.MEDIA_ERR_ABORTED });
         }
     }
 
@@ -132,36 +132,36 @@ Mediaac.prototype.play = function() {
 /**
  * Stop playing audio file.
  */
-Mediaac.prototype.stop = function() {
+Media.prototype.stop = function() {
     try {
         this.pause();
         this.seekTo(0);
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_STOPPED);
+        Media.onStatus(this.id, Media.MEDIA_STATE, Media.MEDIA_STOPPED);
     } catch (err) {
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, err);
+        Media.onStatus(this.id, Media.MEDIA_ERROR, err);
     }
 };
 
 /**
  * Seek or jump to a new time in the track..
  */
-Mediaac.prototype.seekTo = function(milliseconds) {
+Media.prototype.seekTo = function(milliseconds) {
     try {
         this.node.currentTime = milliseconds / 1000;
     } catch (err) {
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, err);
+        Media.onStatus(this.id, Media.MEDIA_ERROR, err);
     }
 };
 
 /**
  * Pause playing audio file.
  */
-Mediaac.prototype.pause = function() {
+Media.prototype.pause = function() {
     try {
         this.node.pause();
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_STATE, Mediaac.MEDIA_PAUSED);
+        Media.onStatus(this.id, Media.MEDIA_STATE, Media.MEDIA_PAUSED);
     } catch (err) {
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, err);
+        Media.onStatus(this.id, Media.MEDIA_ERROR, err);
     }};
 
 /**
@@ -170,17 +170,17 @@ Mediaac.prototype.pause = function() {
  *
  * @return      duration or -1 if not known.
  */
-Mediaac.prototype.getDuration = function() {
+Media.prototype.getDuration = function() {
     return this._duration;
 };
 
 /**
  * Get position of audio.
  */
-Mediaac.prototype.getCurrentPosition = function(success, fail) {
+Media.prototype.getCurrentPosition = function(success, fail) {
     try {
         var p = this.node.currentTime;
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_POSITION, p);
+        Media.onStatus(this.id, Media.MEDIA_POSITION, p);
         success(p);
     } catch (err) {
         fail(err);
@@ -190,31 +190,31 @@ Mediaac.prototype.getCurrentPosition = function(success, fail) {
 /**
  * Start recording audio file.
  */
-Mediaac.prototype.startRecord = function() {
-    Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, "Not supported");
+Media.prototype.startRecord = function() {
+    Media.onStatus(this.id, Media.MEDIA_ERROR, "Not supported");
 };
 
 /**
  * Stop recording audio file.
  */
-Mediaac.prototype.stopRecord = function() {
-    Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, "Not supported");
+Media.prototype.stopRecord = function() {
+    Media.onStatus(this.id, Media.MEDIA_ERROR, "Not supported");
 };
 
 /**
  * Release the resources.
  */
-Mediaac.prototype.release = function() {
+Media.prototype.release = function() {
     try {
         delete this.node;
     } catch (err) {
-        Mediaac.onStatus(this.id, Mediaac.MEDIA_ERROR, err);
+        Media.onStatus(this.id, Media.MEDIA_ERROR, err);
     }};
 
 /**
  * Adjust the volume.
  */
-Mediaac.prototype.setVolume = function(volume) {
+Media.prototype.setVolume = function(volume) {
     this.node.volume = volume;
 };
 
@@ -226,31 +226,31 @@ Mediaac.prototype.setVolume = function(volume) {
  * @param msgType       The 'type' of update this is
  * @param value         Use of value is determined by the msgType
  */
-Mediaac.onStatus = function(id, msgType, value) {
+Media.onStatus = function(id, msgType, value) {
 
     var media = mediaObjects[id];
 
     if(media) {
         switch(msgType) {
-            case Mediaac.MEDIA_STATE :
+            case Media.MEDIA_STATE :
                 if (media.statusCallback) {
                     media.statusCallback(value);
                 }
-                if (value === Mediaac.MEDIA_STOPPED) {
+                if (value === Media.MEDIA_STOPPED) {
                     if (media.successCallback) {
                         media.successCallback();
                     }
                 }
                 break;
-            case Mediaac.MEDIA_DURATION :
+            case Media.MEDIA_DURATION :
                 media._duration = value;
                 break;
-            case Mediaac.MEDIA_ERROR :
+            case Media.MEDIA_ERROR :
                 if (media.errorCallback) {
                     media.errorCallback(value);
                 }
                 break;
-            case Mediaac.MEDIA_POSITION :
+            case Media.MEDIA_POSITION :
                 media._position = Number(value);
                 break;
             default :
@@ -260,8 +260,8 @@ Mediaac.onStatus = function(id, msgType, value) {
                 break;
         }
     } else if (console.error) {
-        console.error("Received Mediaac.onStatus callback for unknown media :: " + id);
+        console.error("Received Media.onStatus callback for unknown media :: " + id);
     }
 };
 
-module.exports = Mediaac;
+module.exports = Media;

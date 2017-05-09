@@ -53,7 +53,7 @@ exports.defineAutoTests = function () {
         done();
     };
 
-    describe('Mediaac', function () {
+    describe('Media', function () {
 
         beforeEach(function () {
             // Custom Matcher
@@ -72,13 +72,13 @@ exports.defineAutoTests = function () {
             });
         });
 
-        it("mediaac.spec.1 should exist", function () {
-            expect(Mediaac).toBeDefined();
-            expect(typeof Mediaac).toBe("function");
+        it("media.spec.1 should exist", function () {
+            expect(Media).toBeDefined();
+            expect(typeof Media).toBe("function");
         });
 
-        it("mediaac.spec.2 should have the following properties", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.2 should have the following properties", function () {
+            var media1 = new Media("dummy");
             expect(media1.id).toBeDefined();
             expect(media1.src).toBeDefined();
             expect(media1._duration).toBeDefined();
@@ -86,16 +86,16 @@ exports.defineAutoTests = function () {
             media1.release();
         });
 
-        it("mediaac.spec.3 should define constants for Mediaac status", function () {
-            expect(Mediaac).toBeDefined();
-            expect(Mediaac.MEDIA_NONE).toBe(0);
-            expect(Mediaac.MEDIA_STARTING).toBe(1);
-            expect(Mediaac.MEDIA_RUNNING).toBe(2);
-            expect(Mediaac.MEDIA_PAUSED).toBe(3);
-            expect(Mediaac.MEDIA_STOPPED).toBe(4);
+        it("media.spec.3 should define constants for Media status", function () {
+            expect(Media).toBeDefined();
+            expect(Media.MEDIA_NONE).toBe(0);
+            expect(Media.MEDIA_STARTING).toBe(1);
+            expect(Media.MEDIA_RUNNING).toBe(2);
+            expect(Media.MEDIA_PAUSED).toBe(3);
+            expect(Media.MEDIA_STOPPED).toBe(4);
         });
 
-        it("mediaac.spec.4 should define constants for Mediaac errors", function () {
+        it("media.spec.4 should define constants for Media errors", function () {
             expect(MediaError).toBeDefined();
             expect(MediaError.MEDIA_ERR_NONE_ACTIVE).toBe(0);
             expect(MediaError.MEDIA_ERR_ABORTED).toBe(1);
@@ -104,71 +104,71 @@ exports.defineAutoTests = function () {
             expect(MediaError.MEDIA_ERR_NONE_SUPPORTED).toBe(4);
         });
 
-        it("mediaac.spec.5 should contain a play function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.5 should contain a play function", function () {
+            var media1 = new Media("dummy");
             expect(media1.play).toBeDefined();
             expect(typeof media1.play).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.6 should contain a stop function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.6 should contain a stop function", function () {
+            var media1 = new Media("dummy");
             expect(media1.stop).toBeDefined();
             expect(typeof media1.stop).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.7 should contain a seekTo function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.7 should contain a seekTo function", function () {
+            var media1 = new Media("dummy");
             expect(media1.seekTo).toBeDefined();
             expect(typeof media1.seekTo).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.8 should contain a pause function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.8 should contain a pause function", function () {
+            var media1 = new Media("dummy");
             expect(media1.pause).toBeDefined();
             expect(typeof media1.pause).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.9 should contain a getDuration function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.9 should contain a getDuration function", function () {
+            var media1 = new Media("dummy");
             expect(media1.getDuration).toBeDefined();
             expect(typeof media1.getDuration).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.10 should contain a getCurrentPosition function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.10 should contain a getCurrentPosition function", function () {
+            var media1 = new Media("dummy");
             expect(media1.getCurrentPosition).toBeDefined();
             expect(typeof media1.getCurrentPosition).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.11 should contain a startRecord function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.11 should contain a startRecord function", function () {
+            var media1 = new Media("dummy");
             expect(media1.startRecord).toBeDefined();
             expect(typeof media1.startRecord).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.12 should contain a stopRecord function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.12 should contain a stopRecord function", function () {
+            var media1 = new Media("dummy");
             expect(media1.stopRecord).toBeDefined();
             expect(typeof media1.stopRecord).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.13 should contain a release function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.13 should contain a release function", function () {
+            var media1 = new Media("dummy");
             expect(media1.release).toBeDefined();
             expect(typeof media1.release).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.14 should contain a setVolume function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.14 should contain a setVolume function", function () {
+            var media1 = new Media("dummy");
             expect(media1.setVolume).toBeDefined();
             expect(typeof media1.setVolume).toBe('function');
             media1.release();
@@ -203,7 +203,7 @@ exports.defineAutoTests = function () {
 
             var context = this,
                 fileName = 'invalid.file.name',
-                badMedia = new Mediaac(fileName, succeed.bind(null, done, ' badMedia = new Mediaac , Unexpected succees callback, it should not create Mediaac object with invalid file name'), function (result) {
+                badMedia = new Media(fileName, succeed.bind(null, done, ' badMedia = new Media , Unexpected succees callback, it should not create Media object with invalid file name'), function (result) {
                     if (context.done) return;
                     context.done = true;
 
@@ -219,18 +219,18 @@ exports.defineAutoTests = function () {
 
         describe('actual playback', function() {
             var checkInterval,
-                mediaac;
+                media;
 
             afterEach(function() {
                 clearInterval(checkInterval);
-                if (mediaac) {
-                    mediaac.stop();
-                    mediaac.release();
-                    mediaac = null;
+                if (media) {
+                    media.stop();
+                    media.release();
+                    media = null;
                 }
             });
 
-            it("mediaac.spec.16 position should be set properly", function (done) {
+            it("media.spec.16 position should be set properly", function (done) {
                 // no audio hardware available
                 if (!isAudioSupported) {
                     pending();
@@ -243,24 +243,24 @@ exports.defineAutoTests = function () {
                     mediaFile = WEB_MP3_FILE,
                     successCallback = function () { },
                     statusChange = function (statusCode) {
-                        if (!context.done && statusCode == Mediaac.MEDIA_RUNNING) {
+                        if (!context.done && statusCode == Media.MEDIA_RUNNING) {
                             checkInterval = setInterval(function () {
                                 if (context.done) return;
-                                mediaac.getCurrentPosition(function successCallback(position) {
+                                media.getCurrentPosition(function successCallback(position) {
                                     if (position > 0.0) {
                                         context.done = true;
                                         expect(true).toBe(true);
                                         done();
                                     }
-                                }, failed.bind(null, done, 'media1.getCurrentPosition - Error getting mediaac current position', context));
+                                }, failed.bind(null, done, 'media1.getCurrentPosition - Error getting media current position', context));
                             }, 1000);
                         }
                     };
-                mediaac = new Mediaac(mediaFile, successCallback, failed.bind(self, done, 'media1 = new Mediaac - Error creating Mediaac object. Mediaac file: ' + mediaFile, context), statusChange);
-                mediaac.play();
+                media = new Media(mediaFile, successCallback, failed.bind(self, done, 'media1 = new Media - Error creating Media object. Media file: ' + mediaFile, context), statusChange);
+                media.play();
             }, ACTUAL_PLAYBACK_TEST_TIMEOUT);
 
-            it("mediaac.spec.20 duration should be set properly", function (done) {
+            it("media.spec.20 duration should be set properly", function (done) {
                 if (!isAudioSupported || cordova.platformId === 'blackberry10') {
                     pending();
                 }
@@ -272,20 +272,20 @@ exports.defineAutoTests = function () {
                     mediaFile = WEB_MP3_FILE,
                     successCallback = function () { },
                     statusChange = function (statusCode) {
-                        if (!context.done && statusCode == Mediaac.MEDIA_RUNNING) {
+                        if (!context.done && statusCode == Media.MEDIA_RUNNING) {
                             checkInterval = setInterval(function () {
                                 if (context.done) return;
-                                mediaac.getCurrentPosition(function (position) {
+                                media.getCurrentPosition(function (position) {
                                     if (position > 0.0) {
                                         context.done = true;
-                                        expect(mediaac.getDuration()).toBeGreaterThan(0.0);
+                                        expect(media.getDuration()).toBeGreaterThan(0.0);
                                         done();
                                     }
-                                }, failed.bind(null, done, 'media1.getCurrentPosition - Error getting mediaac current position', context));
+                                }, failed.bind(null, done, 'media1.getCurrentPosition - Error getting media current position', context));
                             }, 1000);
                         }
                     };
-                media = new Mediaac(mediaFile, successCallback, failed.bind(null, done, 'media1 = new Media - Error creating Media object. Media file: ' + mediaFile, context), statusChange);
+                media = new Media(mediaFile, successCallback, failed.bind(null, done, 'media1 = new Media - Error creating Media object. Media file: ' + mediaFile, context), statusChange);
                 media.play();
             }, ACTUAL_PLAYBACK_TEST_TIMEOUT);
 
@@ -366,14 +366,14 @@ exports.defineAutoTests = function () {
             }, ACTUAL_PLAYBACK_TEST_TIMEOUT);
         });
 
-        it("mediaac.spec.23 should contain a setRate function", function () {
-            var media1 = new Mediaac("dummy");
+        it("media.spec.23 should contain a setRate function", function () {
+            var media1 = new Media("dummy");
             expect(media1.setRate).toBeDefined();
             expect(typeof media1.setRate).toBe('function');
             media1.release();
         });
 
-        it("mediaac.spec.24 playback rate should be set properly using setRate", function (done) {
+        it("media.spec.24 playback rate should be set properly using setRate", function (done) {
             if (cordova.platformId !== 'ios') {
                 expect(true).toFailWithMessage('Platform does not supported this feature');
                 pending();
@@ -390,7 +390,7 @@ exports.defineAutoTests = function () {
                 flag = true,
                 statusChange = function (statusCode) {
                     console.log("status code: " + statusCode);
-                    if (statusCode == Mediaac.MEDIA_RUNNING && flag) {
+                    if (statusCode == Media.MEDIA_RUNNING && flag) {
                         //flag variable used to ensure an extra security statement to ensure that the callback is processed only once,
                         //in case for some reason the statusChange callback is reached more than one time with the same status code.
                         //Some information about this kind of behavior it can be found at JIRA: CB-7099
@@ -410,7 +410,7 @@ exports.defineAutoTests = function () {
                     }
                 };
 
-            var media1 = new Mediaac(mediaFile, successCallback, failed.bind(null, done, 'media1 = new Media - Error creating Media object. Media file: ' + mediaFile, context), statusChange); // jshint ignore:line
+            var media1 = new Media(mediaFile, successCallback, failed.bind(null, done, 'media1 = new Media - Error creating Media object. Media file: ' + mediaFile, context), statusChange); // jshint ignore:line
             //make audio playback two times faster
             media1.setRate(2);
             media1.play();
@@ -434,7 +434,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
     //Play audio function
     function playAudio(url) {
         console.log("playAudio()");
-        console.log(" -- mediaac=" + media1);
+        console.log(" -- media=" + media1);
 
         var src = defaultaudio;
 
@@ -461,7 +461,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
             //var src = "bryce.mp3";  // works
             //var src = "/android_asset/www/bryce.mp3"; // works
 
-            media1 = new Mediaac(src,
+            media1 = new Media(src,
                     function () {
                     console.log("playAudio():Audio Success");
                 },
@@ -471,10 +471,10 @@ exports.defineManualTests = function (contentEl, createActionButton) {
                 },
                     function (status) {
                     console.log("playAudio():Audio Status: " + status);
-                    setAudioStatus(Mediaac.MEDIA_MSG[status]);
+                    setAudioStatus(Media.MEDIA_MSG[status]);
 
                     // If stopped, then stop getting current position
-                    if (Mediaac.MEDIA_STOPPED == status) {
+                    if (Media.MEDIA_STOPPED == status) {
                         clearInterval(media1Timer);
                         media1Timer = null;
                         setAudioPosition("0 sec");
@@ -568,7 +568,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
             if (audioSrc === null) {
                 audioSrc = defaultaudio;
             }
-            media1 = new Mediaac(audioSrc,
+            media1 = new Media(audioSrc,
                     function () {
                     console.log("seekToAudio():Audio Success");
                 },
@@ -578,10 +578,10 @@ exports.defineManualTests = function (contentEl, createActionButton) {
                 },
                     function (status) {
                     console.log("seekAudio():Audio Status: " + status);
-                    setAudioStatus(Mediaac.MEDIA_MSG[status]);
+                    setAudioStatus(Media.MEDIA_MSG[status]);
 
                     // If stopped, then stop getting current position
-                    if (Mediaac.MEDIA_STOPPED == status) {
+                    if (Media.MEDIA_STOPPED == status) {
                         clearInterval(media1Timer);
                         media1Timer = null;
                         setAudioPosition("0 sec");
@@ -645,12 +645,12 @@ exports.defineManualTests = function (contentEl, createActionButton) {
     //Record audio
     function recordAudio() {
         console.log("recordAudio()");
-        console.log(" -- mediaac=" + mediaRec);
+        console.log(" -- media=" + mediaRec);
 
         releaseAudio();
 
         if (!mediaRec) {
-            mediaRec = new Mediaac(recordSrc,
+            mediaRec = new Media(recordSrc,
                 function () {
                     console.log("recordAudio():Audio Success");
                 },
@@ -660,7 +660,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
                 },
                     function (status) {
                     console.log("recordAudio():Audio Status: " + status);
-                    setAudioStatus(Mediaac.MEDIA_MSG[status]);
+                    setAudioStatus(Media.MEDIA_MSG[status]);
                 });
         }
 

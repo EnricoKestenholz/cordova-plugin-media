@@ -16,7 +16,7 @@
        specific language governing permissions and limitations
        under the License.
 */
-package org.apache.cordova.mediaac;
+package org.apache.cordova.media;
 import org.apache.cordova.LOG;
 
 import com.spoledge.aacdecoder.MultiPlayer;

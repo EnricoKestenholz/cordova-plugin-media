@@ -34,12 +34,12 @@ var mediaObjects = {};
  *                                  successCallback()
  * @param errorCallback         The callback to be called if there is an error.
  *                                  errorCallback(int errorCode) - OPTIONAL
- * @param statusCallback        The callback to be called when mediaac status has changed.
+ * @param statusCallback        The callback to be called when media status has changed.
  *                                  statusCallback(int statusCode) - OPTIONAL
- * @param playerType            The mediaac player type { androidPlayer | streamPlayer }.
+ * @param playerType            The media player type { androidPlayer | streamPlayer }.
  */
-var Mediaac = function(src, successCallback, errorCallback, statusCallback, playerType) {
-    argscheck.checkArgs('sFFF', 'Mediaac', arguments);
+var Media = function(src, successCallback, errorCallback, statusCallback, playerType) {
+    argscheck.checkArgs('sFFF', 'Media', arguments);
 
     this.id = utils.createUUID();
     mediaObjects[this.id] = this;
@@ -49,113 +49,113 @@ var Mediaac = function(src, successCallback, errorCallback, statusCallback, play
     this.statusCallback = statusCallback;
     this._duration = -1;
     this._position = -1;
-    exec(null, this.errorCallback, "Mediaac", "create", [this.id, this.src]);
+    exec(null, this.errorCallback, "Media", "create", [this.id, this.src]);
 };
 
-// Mediaac messages
-Mediaac.MEDIA_STATE = 1;
-Mediaac.MEDIA_DURATION = 2;
-Mediaac.MEDIA_POSITION = 3;
-Mediaac.MEDIA_ERROR = 9;
+// Media messages
+Media.MEDIA_STATE = 1;
+Media.MEDIA_DURATION = 2;
+Media.MEDIA_POSITION = 3;
+Media.MEDIA_ERROR = 9;
 
-// Mediaac states
-Mediaac.MEDIA_NONE = 0;
-Mediaac.MEDIA_STARTING = 1;
-Mediaac.MEDIA_RUNNING = 2;
-Mediaac.MEDIA_PAUSED = 3;
-Mediaac.MEDIA_STOPPED = 4;
-Mediaac.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
+// Media states
+Media.MEDIA_NONE = 0;
+Media.MEDIA_STARTING = 1;
+Media.MEDIA_RUNNING = 2;
+Media.MEDIA_PAUSED = 3;
+Media.MEDIA_STOPPED = 4;
+Media.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
 
 // "static" function to return existing objs.
-Mediaac.get = function(id) {
+Media.get = function(id) {
     return mediaObjects[id];
 };
 
 /**
  * Start or resume playing audio file.
  */
-Mediaac.prototype.play = function(options) {
-    exec(null, null, "Mediaac", "startPlayingAudio", [this.id, this.src, options]);
+Media.prototype.play = function(options) {
+    exec(null, null, "Media", "startPlayingAudio", [this.id, this.src, options]);
 };
 
 /**
  * Stop playing audio file.
  */
-Mediaac.prototype.stop = function() {
+Media.prototype.stop = function() {
     var me = this;
     exec(function() {
         me._position = 0;
-    }, this.errorCallback, "Mediaac", "stopPlayingAudio", [this.id]);
+    }, this.errorCallback, "Media", "stopPlayingAudio", [this.id]);
 };
 
 /**
  * Pause playing audio file.
  */
-Mediaac.prototype.pause = function() {
-    exec(null, this.errorCallback, "Mediaac", "pausePlayingAudio", [this.id]);
+Media.prototype.pause = function() {
+    exec(null, this.errorCallback, "Media", "pausePlayingAudio", [this.id]);
 };
 
 /**
  * Release the resources.
  */
-Mediaac.prototype.release = function() {
-    exec(null, this.errorCallback, "Mediaac", "release", [this.id, this.playerType]);
+Media.prototype.release = function() {
+    exec(null, this.errorCallback, "Media", "release", [this.id, this.playerType]);
 };
 
 /**
  * Audio has status update.
  * PRIVATE
  *
- * @param id            The mediaac object id (string)
+ * @param id            The media object id (string)
  * @param msgType       The 'type' of update this is
  * @param value         Use of value is determined by the msgType
  */
-Mediaac.onStatus = function(id, msgType, value) {
+Media.onStatus = function(id, msgType, value) {
 
     var media = mediaObjects[id];
 
     if (media) {
         switch(msgType) {
-            case Mediaac.MEDIA_STATE :
+            case Media.MEDIA_STATE :
                 if (media.statusCallback) {
                     media.statusCallback(value);
                 }
-                if(value == Mediaac.MEDIA_STOPPED) {
+                if(value == Media.MEDIA_STOPPED) {
                     if (media.successCallback) {
                         media.successCallback();
                     }
                 }
                 break;
-            case Mediaac.MEDIA_DURATION :
+            case Media.MEDIA_DURATION :
                 media._duration = value;
                 break;
-            case Mediaac.MEDIA_ERROR :
+            case Media.MEDIA_ERROR :
                 if (media.errorCallback) {
                     media.errorCallback(value);
                 }
                 break;
-            case Mediaac.MEDIA_POSITION :
+            case Media.MEDIA_POSITION :
                 media._position = Number(value);
                 break;
             default :
                 if (console.error) {
-                    console.error("Unhandled Mediaac.onStatus :: " + msgType);
+                    console.error("Unhandled Media.onStatus :: " + msgType);
                 }
                 break;
         }
     } else if (console.error) {
-        console.error("Received Mediaac.onStatus callback for unknown media :: " + id);
+        console.error("Received Media.onStatus callback for unknown media :: " + id);
     }
 
 };
 
-module.exports = Mediaac;
+module.exports = Media;
 
 function onMessageFromNative(msg) {
     if (msg.action == 'status') {
-        Mediaac.onStatus(msg.status.id, msg.status.msgType, msg.status.value);
+        Media.onStatus(msg.status.id, msg.status.msgType, msg.status.value);
     } else {
-        throw new Error('Unknown mediaac action' + msg.action);
+        throw new Error('Unknown media action' + msg.action);
     }
 }
 
@@ -167,7 +167,7 @@ if (cordova.platformId === 'android' || cordova.platformId === 'amazon-fireos' |
     channel.waitForInitialization('onMediaPluginReady');
 
     channel.onCordovaReady.subscribe(function() {
-        exec(onMessageFromNative, undefined, 'Mediaac', 'messageChannel', []);
+        exec(onMessageFromNative, undefined, 'Media', 'messageChannel', []);
         channel.initializationComplete('onMediaPluginReady');
     });
 }

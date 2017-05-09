@@ -1,9 +1,9 @@
 {
-  "name": "cordova-plugin-mediaac",
+  "name": "cordova-plugin-media",
   "version": "2.4.2-aac",
   "description": "Cordova Media AAC Plugin",
   "cordova": {
-    "id": "cordova-plugin-mediaac",
+    "id": "cordova-plugin-media",
     "platforms": [
       "android",
       "amazon-fireos",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/AlexisCaffa/cordova-plugin-mediaac"
+    "url": "https://github.com/AlexisCaffa/cordova-plugin-media"
   },
   "keywords": [
     "cordova",
     "media",
-    "mediaac",
+    "media",
     "aac",
     "aacp",
     "aac+",
